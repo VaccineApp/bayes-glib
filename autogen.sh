@@ -16,6 +16,7 @@ touch ChangeLog
 touch INSTALL
 
 aclocal --install -I m4 || exit 1
+gtkdocize || exit 1
 autoreconf --force --install -Wno-portability || exit 1
 
 if [ "$NOCONFIGURE" = "" ]; then

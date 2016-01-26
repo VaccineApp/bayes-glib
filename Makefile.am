@@ -1,6 +1,4 @@
-SUBDIRS = data src tests
-
-
+SUBDIRS = m4 data src tests doc
 EXTRA_DIST = AUTHORS
 
 

@@ -53,9 +53,8 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources])
 PKG_PROG_PKG_CONFIG([0.22])
 GLIB_GSETTINGS
-
 GOBJECT_INTROSPECTION_CHECK([1.42.0])
-
+GTK_DOC_CHECK
 
 
 dnl ***********************************************************************
@@ -76,15 +75,14 @@ dnl Process .in Files
 dnl ***********************************************************************
 AC_CONFIG_FILES([
 	Makefile
-
-	src/Makefile
-	src/bayes-version.h
-
 	data/Makefile
 	data/bayes-glib-1.0.pc
-
+	doc/Makefile
+	doc/version.xml
+	m4/Makefile
+	src/Makefile
+	src/bayes-version.h
 	tests/Makefile
-
 ])
 AC_OUTPUT
 
