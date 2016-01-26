@@ -1,0 +1,81 @@
+/* license */
+
+#ifndef BAYES_GLIB_VERSION_H
+#define BAYES_GLIB_VERSION_H
+
+#if !defined(BAYES_GLIB_INSIDE) && !defined(BAYES_GLIB_COMPILATION)
+# error "Only <bayes-glib.h> can be included directly."
+#endif
+
+/**
+ * SECTION:bayes-version
+ * @short_description: bayes-glib version checking
+ *
+ * bayes-glib provides macros to check the version of the library
+ * at compile-time
+ */
+
+/**
+ * BAYES_MAJOR_VERSION:
+ *
+ * bayes-glib major version component (e.g. 1 if %BAYES_VERSION is 1.2.3)
+ */
+#define BAYES_MAJOR_VERSION (@MAJOR_VERSION@)
+
+/**
+ * BAYES_MINOR_VERSION:
+ *
+ * bayes-glib minor version component (e.g. 2 if %BAYES_VERSION is 1.2.3)
+ */
+#define BAYES_MINOR_VERSION (@MINOR_VERSION@)
+
+/**
+ * BAYES_MICRO_VERSION:
+ *
+ * bayes-glib micro version component (e.g. 3 if %BAYES_VERSION is 1.2.3)
+ */
+#define BAYES_MICRO_VERSION (@MICRO_VERSION@)
+
+/**
+ * BAYES_VERSION
+ *
+ * bayes-glib version.
+ */
+#define BAYES_VERSION (@VERSION@)
+
+/**
+ * BAYES_VERSION_S:
+ *
+ * bayes-glib version, encoded as a string, useful for printing and
+ * concatenation.
+ */
+#define BAYES_VERSION_S "@VERSION@"
+
+#define BAYES_ENCODE_VERSION(major,minor,micro) \
+        ((major) << 24 | (minor) << 16 | (micro) << 8)
+
+/**
+ * BAYES_VERSION_HEX:
+ *
+ * bayes-glib version, encoded as an hexadecimal number, useful for
+ * integer comparisons.
+ */
+#define BAYES_VERSION_HEX \
+        (BAYES_ENCODE_VERSION (BAYES_MAJOR_VERSION, BAYES_MINOR_VERSION, BAYES_MICRO_VERSION))
+
+/**
+ * BAYES_CHECK_VERSION:
+ * @major: required major version
+ * @minor: required minor version
+ * @micro: required micro version
+ *
+ * Compile-time version checking. Evaluates to %TRUE if the version
+ * of bayes-glib is greater than the required one.
+ */
+#define BAYES_CHECK_VERSION(major,minor,micro)   \
+        (BAYES_MAJOR_VERSION > (major) || \
+         (BAYES_MAJOR_VERSION == (major) && BAYES_MINOR_VERSION > (minor)) || \
+         (BAYES_MAJOR_VERSION == (major) && BAYES_MINOR_VERSION == (minor) && \
+          BAYES_MICRO_VERSION >= (micro)))
+
+#endif /* BAYES_GLIB_VERSION_H */
