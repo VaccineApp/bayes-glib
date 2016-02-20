@@ -27,7 +27,14 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (BayesStorageMemory, bayes_storage_memory, BAYES, STORAGE_MEMORY, GObject)
 
-BayesStorage *bayes_storage_memory_new (void);
+/**
+ * bayes_storage_memory_new:
+ *
+ * Creates a new #BayesStorageMemory instance.
+ *
+ * Returns: (transfer full): A new #BayesStorageMemory
+ */
+BayesStorageMemory *bayes_storage_memory_new (void);
 
 G_END_DECLS
 

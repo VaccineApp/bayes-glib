@@ -114,34 +114,12 @@ bayes_classifier_tokenize (BayesClassifier *self,
   return self->token_func (text, self->token_user_data);
 }
 
-/**
- * bayes_classifier_new:
- *
- * Create a new instance of #BayesClassifier. The instance should be
- * freed using g_object_unref ().
- *
- * See bayes_classifier_train () for how to train your classifier.
- * See bayes_classifier_guess () for guessing the classification of
- * unknown input.
- *
- * Returns: (transfer full): A newly allocated #BayesClassifier.
- */
 BayesClassifier *
 bayes_classifier_new (void)
 {
   return g_object_new (BAYES_TYPE_CLASSIFIER, NULL);
 }
 
-/**
- * bayes_classifier_train:
- * @self: (in): A #BayesClassifier.
- * @name: (in): The classification for @text.
- * @text: (in): Text to tokenize and store for guessing.
- *
- * Tokenizes @text and stores the values under the classification named
- * @name. These are used by bayes_classifier_guess () to determine
- * the classification.
- */
 void
 bayes_classifier_train (BayesClassifier *self,
                         const gchar     *name,
@@ -196,27 +174,6 @@ bayes_classifier_combiner (BayesClassifier  *self,
   return self->combiner_func (self, guesses, len, name, self->combiner_user_data);
 }
 
-/**
- * bayes_classifier_guess:
- * @self: (in): A #BayesClassifier.
- * @text: (in): Text to tokenize and guess the classification.
- *
- * Tries to guess the classification of @text by tokenizing @text using
- * the tokenizer provided to bayes_classifier_set_tokenizer()
- * and testing each token against the classifiers training.
- *
- * This method returns a #GList of #BayesGuess instances. It is up to the
- * caller to free the individual #BayesGuess structures as well as the
- * containing #GList.
- *
- * [[
- * GList *list = bayes_classifier_guess (classifier, "who am i?");
- * g_list_foreach (list, (GFunc)bayes_guess_unref);
- * g_list_free (list);
- * ]]
- *
- * Returns: (transfer full) (element-type BayesGuess*): The guesses.
- */
 GList *
 bayes_classifier_guess (BayesClassifier *self,
                         const gchar     *text)
@@ -269,14 +226,6 @@ bayes_classifier_guess (BayesClassifier *self,
   return ret;
 }
 
-/**
- * bayes_classifier_get_storage:
- * @self: (in): A #BayesClassifier.
- *
- * Retrieves the #BayesStorage used for tokens by @classifier.
- *
- * Returns: (transfer none): A #BayesStorage.
- */
 BayesStorage *
 bayes_classifier_get_storage (BayesClassifier *self)
 {
@@ -285,14 +234,6 @@ bayes_classifier_get_storage (BayesClassifier *self)
   return self->storage;
 }
 
-/**
- * bayes_classifier_set_storage:
- * @self: (in): A #BayesClassifier.
- * @storage: (in) (allow-none): A #BayesStorage or %NULL.
- *
- * Sets the storage to use for tokens by the classifier.
- * If @storage is %NULL, then in memory storage will be used.
- */
 void
 bayes_classifier_set_storage (BayesClassifier *self,
                               BayesStorage    *storage)
@@ -304,17 +245,6 @@ bayes_classifier_set_storage (BayesClassifier *self,
     g_object_notify_by_pspec (G_OBJECT (self), properties [PROP_STORAGE]);
 }
 
-/**
- * bayes_classifier_set_tokenizer:
- * @self: (in): A #BayesClassifier.
- * @tokenizer: (in): A #BayesTokenizer.
- * @user_data: (in): User data for @tokenizer.
- * @notify: (in): Destruction notification for @user_data.
- *
- * Sets the tokenizer to use to tokenize input text by @classifer for
- * both training using bayes_classifier_train() and guessing using
- * bayes_classifier_guess().
- */
 void
 bayes_classifier_set_tokenizer (BayesClassifier *self,
                                 BayesTokenizer   tokenizer,

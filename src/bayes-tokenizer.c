@@ -30,16 +30,6 @@ static GRegex *word_regex;
  * as splitting text on word boundries. Others may be more complicated.
  */
 
-/**
- * bayes_tokenizer_word:
- * @text: (in): A string of text to tokenize.
- * @user_data: (in): Unused.
- *
- * Standard tokenizer for input text that tries to split the text
- * based on whitespace. This uses a simple regex "\w+".
- *
- * Returns: (transfer full): A #GStrv. Free with g_strfreev().
- */
 gchar **
 bayes_tokenizer_word (const gchar *text,
                       gpointer     user_data)

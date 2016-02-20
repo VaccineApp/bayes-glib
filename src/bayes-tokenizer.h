@@ -26,7 +26,7 @@ G_BEGIN_DECLS
 /**
  * BayesTokenizer:
  * @text: (in): The text to tokenize.
- * @user_data: (in): User data provided during registration.
+ * @user_data: (closure): User data provided during registration.
  *
  * #BayesTokenizer is a callback that can be used to tokenize
  * a piece of text into individual tokens. This is used by a
@@ -36,11 +36,23 @@ G_BEGIN_DECLS
  * The caller is responsible for freeing the result with
  * g_strfreev().
  *
- * Returns: (transfer full): A newly allocated #GStrv.
+ * Returns: (array zero-terminated=1) (transfer full):
+ *      A newly allocated, null-terminated array of strings.
  */
 typedef gchar **(*BayesTokenizer) (const gchar *text,
                                    gpointer     user_data);
 
+/**
+ * bayes_tokenizer_word:
+ * @text: (in): A string of text to tokenize.
+ * @user_data: (in): Unused.
+ *
+ * Standard tokenizer for input text that tries to split the text
+ * based on whitespace. This uses a simple regex "\w+".
+ *
+ * Returns: (array zero-terminated=1) (transfer full):
+ *      A newly allocated, null-terminated array of strings.
+ */
 gchar **bayes_tokenizer_word (const gchar *text,
                               gpointer     user_data);
 

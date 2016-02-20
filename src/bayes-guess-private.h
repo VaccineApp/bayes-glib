@@ -25,6 +25,7 @@ G_BEGIN_DECLS
 
 struct _BayesGuess
 {
+   /*< private >*/
    volatile gint  ref_count;
    gdouble        probability;
    gchar         *name;

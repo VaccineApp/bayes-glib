@@ -63,14 +63,7 @@ tokens_free (gpointer data)
     }
 }
 
-/**
- * bayes_storage_memory_new:
- *
- * Creates a new #BayesStorageMemory instance.
- *
- * Returns: (transfer full): A #BayesStorageMemory.
- */
-BayesStorage *
+BayesStorageMemory *
 bayes_storage_memory_new (void)
 {
   return g_object_new (BAYES_TYPE_STORAGE_MEMORY, NULL);

@@ -70,17 +70,6 @@ bayes_storage_default_init (BayesStorageInterface *iface)
   iface->get_token_probability = bayes_storage_real_get_token_probability;
 }
 
-/**
- * bayes_storage_add_token_count:
- * @self: A #BayesStorage.
- * @name: The classification to store the token in.
- * @token: The token to add.
- * @count: The count of times @token was found.
- *
- * This function will add a token to the storage, applying it to the given
- * classification. @count should indiciate the number of times that the
- * token was found.
- */
 void
 bayes_storage_add_token_count (BayesStorage *self,
                                const gchar  *name,
@@ -95,15 +84,6 @@ bayes_storage_add_token_count (BayesStorage *self,
   BAYES_STORAGE_GET_IFACE (self)->add_token_count (self, name, token, count);
 }
 
-/**
- * bayes_storage_add_token:
- * @self: A #BayesStorage.
- * @name: The classification to store the token in.
- * @token: The token to add.
- *
- * This function will add a token to the storage, applying it to the given
- * classification.
- */
 void
 bayes_storage_add_token (BayesStorage *self,
                          const gchar  *name,
@@ -116,15 +96,6 @@ bayes_storage_add_token (BayesStorage *self,
   BAYES_STORAGE_GET_IFACE (self)->add_token_count (self, name, token, 1);
 }
 
-/**
- * bayes_storage_get_names:
- * @self: A #BayesStorage.
- *
- * Retrieves the names of the classifications trained in this storage
- * instance. The result should be freed with g_strfreev().
- *
- * Returns: (transfer full): A #GStrv of class names.
- */
 gchar **
 bayes_storage_get_names (BayesStorage *self)
 {
@@ -133,19 +104,6 @@ bayes_storage_get_names (BayesStorage *self)
   return BAYES_STORAGE_GET_IFACE (self)->get_names (self);
 }
 
-/**
- * bayes_storage_get_token_count:
- * @storage: A #BayesStorage.
- * @name: (nullable): The classification or %NULL for all.
- * @token: (nullable): The token or %NULL for all.
- *
- * Retrieves the number of times @token has been found in the training
- * data. If @token is %NULL, the count of all items in the classification
- * will be retrieved. If @name is %NULL, then the count of all the
- * instances of @token in the all the classifications.
- *
- * Returns: A #guint containing the count of all items.
- */
 guint
 bayes_storage_get_token_count (BayesStorage *self,
                                const gchar  *name,
@@ -157,16 +115,6 @@ bayes_storage_get_token_count (BayesStorage *self,
   return BAYES_STORAGE_GET_IFACE (self)->get_token_count (self, name, token);
 }
 
-/**
- * bayes_storage_get_token_probability:
- * @storage: A #BayesStorage.
- * @name: The classification.
- * @token: The desired token.
- *
- * Checks to see the probability of a token being a given classification.
- *
- * Returns: A #gdouble between 0.0 and 1.0 containing the probability.
- */
 gdouble
 bayes_storage_get_token_probability (BayesStorage *self,
                                      const gchar  *name,

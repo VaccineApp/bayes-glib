@@ -4,8 +4,10 @@ static void
 test1 (void)
 {
    g_autoptr(BayesStorage) storage = NULL;
+   BayesStorageMemory *storage_memory;
 
-   storage = bayes_storage_memory_new ();
+   storage_memory = bayes_storage_memory_new ();
+   storage = BAYES_STORAGE (storage_memory);
    bayes_storage_add_token (storage, "english", "turbo");
    bayes_storage_add_token (storage, "english", "brakes");
    bayes_storage_add_token (storage, "english", "suspension");

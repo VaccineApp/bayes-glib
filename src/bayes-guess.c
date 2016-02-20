@@ -38,16 +38,6 @@
 
 G_DEFINE_BOXED_TYPE (BayesGuess, bayes_guess, bayes_guess_ref, bayes_guess_unref)
 
-/**
- * bayes_guess_new:
- * @name: (in): The name of the classification.
- * @probability: (in): The probability of the classification.
- *
- * Creates a new #BayesGuess that is the probability of a given
- * classification.
- *
- * Returns: (transfer full): A newly allocated #BayesGuess.
- */
 BayesGuess *
 bayes_guess_new (const gchar *name,
                  gdouble      probability)
@@ -103,14 +93,6 @@ bayes_guess_unref (BayesGuess *guess)
     }
 }
 
-/**
- * bayes_guess_get_name:
- * @guess: (in): A #BayesGuess.
- *
- * Retrieves the classification name for which this guess represents.
- *
- * Returns: A string which should not be modified or freed.
- */
 const gchar *
 bayes_guess_get_name (BayesGuess *guess)
 {
@@ -119,15 +101,6 @@ bayes_guess_get_name (BayesGuess *guess)
   return guess->name;
 }
 
-/**
- * bayes_guess_get_probability:
- * @guess: (in): A #BayesGuess.
- *
- * Retrieves the probability that the input data matches the classification
- * this guess represents.
- *
- * Returns: A #gdouble between 0.0 and 1.0.
- */
 gdouble
 bayes_guess_get_probability (BayesGuess *guess)
 {

@@ -38,7 +38,6 @@ introspection_sources_0 = \
 introspection_sources = $(introspecion_sources_0)
 introspection_sources += $(introspection_sources_0:.c=.h)
 introspection_sources += \
-	bayes-glib.h \
 	bayes-guess-private.h
 
 Bayes-1.0.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES)
