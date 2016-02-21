@@ -34,15 +34,15 @@ static void bayes_storage_init (BayesStorageInterface *iface);
 
 typedef struct
 {
-  GHashTable *tokens;
+  GHashTable *tokens;   // HashTable<string,uint> (token => frequency)
   guint       count;
 } Tokens;
 
 struct _BayesStorageMemory
 {
   GObject     parent_instance;
-  GHashTable *names;
-  Tokens     *corpus;
+  GHashTable *names;    // HashTable<string,Tokens> (class => token list)
+  Tokens     *corpus;   // all tokens (independent of class)
 };
 
 G_DEFINE_TYPE_EXTENDED (BayesStorageMemory,
