@@ -1,32 +1,32 @@
-noinst_PROGRAMS = classifier trainer
+bin_PROGRAMS = bayes-classifier bayes-trainer
 
-classifier_SOURCES = classifier.vala
-classifier_CFLAGS = \
+bayes_classifier_SOURCES = classifier.vala
+bayes_classifier_CFLAGS = \
 	-Wno-incompatible-pointer-types \
 	$(BAYES_GLIB_CFLAGS)
-classifier_LDFLAGS = \
+bayes_classifier_LDFLAGS = \
 	$(BAYES_GLIB_LIBS) \
 	-lbayes-glib-1.0 \
 	-lm
-classifier_VALAFLAGS = \
+bayes_classifier_VALAFLAGS = \
 	--vapidir ../src \
 	--pkg bayes-glib-1.0 \
 	--pkg json-glib-1.0
 
-trainer_SOURCES = trainer.vala
-trainer_CFLAGS = \
+bayes_trainer_SOURCES = trainer.vala
+bayes_trainer_CFLAGS = \
 	-Wno-incompatible-pointer-types \
 	$(BAYES_GLIB_CFLAGS)
-trainer_LDFLAGS = \
+bayes_trainer_LDFLAGS = \
 	$(BAYES_GLIB_LIBS) \
 	-lbayes-glib-1.0 \
 	-lm
-trainer_VALAFLAGS = \
+bayes_trainer_VALAFLAGS = \
 	--vapidir ../src \
 	--pkg bayes-glib-1.0 \
 	--pkg json-glib-1.0
 
 
 CLEANFILES = *.h *.c *.o *.stamp \
-	classifier classifier.c \
-	trainer trainer.c
+	bayes-classifier classifier.c \
+	bayes-trainer trainer.c
