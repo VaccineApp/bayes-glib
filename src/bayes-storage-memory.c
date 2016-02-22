@@ -405,14 +405,16 @@ bayes_storage_memory_deserialize_property (JsonSerializable *serializable,
 		 */
 		json_object_foreach_member (obj_table, bayes_storage_hashtable_deserialize_foreach, table);
 
-		g_value_init (value, G_TYPE_HASH_TABLE);
+		// g_value_init (value, G_TYPE_HASH_TABLE);
+                g_assert (G_VALUE_TYPE (value) == G_TYPE_HASH_TABLE);
 		g_value_set_boxed (value, table);
 
 		return TRUE;
 	} else if (g_strcmp0 (prop_name, "corpus") == 0) {
 		gpointer boxed;
 
-		g_value_init (value, BAYES_TYPE_TOKENS);
+		// g_value_init (value, BAYES_TYPE_TOKENS);
+                g_assert (G_VALUE_TYPE (value) == BAYES_TYPE_TOKENS);
 		boxed = json_boxed_deserialize (BAYES_TYPE_TOKENS, prop_node);
 		g_assert (boxed != NULL);
 
@@ -492,19 +494,14 @@ bayes_storage_memory_set_property (GObject     *object,
 				   GParamSpec   *pspec)
 {
 	BayesStorageMemory *self = (BayesStorageMemory *) object;
-	gpointer boxed;
 
 	switch (prop_id) {
 	case PROP_NAMES:
-		boxed = g_value_get_boxed (value);
-		g_assert (boxed != NULL);
-		self->names = boxed;
+		self->names = g_value_dup_boxed (value);
 		g_object_notify_by_pspec (object, obj_properties [PROP_NAMES]);
 		break;
 	case PROP_CORPUS:
-		boxed = g_value_get_boxed (value);
-		g_assert (boxed != NULL);
-		self->corpus = boxed;
+		self->corpus = g_value_dup_boxed (value);
 		g_object_notify_by_pspec (object, obj_properties [PROP_CORPUS]);
 		break;
 	default:
@@ -559,6 +556,20 @@ bayes_storage_memory_class_init (BayesStorageMemoryClass *klass)
 		  		     N_PROPERTIES, obj_properties);
 }
 
+static GParamSpec *
+bayes_storage_memory_find_property (JsonSerializable *serializable,
+                                    const gchar       *name)
+{
+  BayesStorageMemory *self;
+  GObjectClass *klass;
+
+  self = BAYES_STORAGE_MEMORY (serializable);
+  g_assert (self != NULL);
+
+  klass = G_OBJECT_GET_CLASS (self);
+  return g_object_class_find_property (klass, name);
+}
+
 static void
 bayes_storage_memory_init (BayesStorageMemory *self)
 {
@@ -580,8 +591,9 @@ bayes_storage_init (BayesStorageInterface *iface)
 }
 
 static void json_serializable_iface_init (JsonSerializableIface *iface) {
-	serializable_iface = g_type_default_interface_peek (JSON_TYPE_SERIALIZABLE);
+  serializable_iface = g_type_default_interface_peek (JSON_TYPE_SERIALIZABLE);
 
-	iface->serialize_property = bayes_storage_memory_serialize_property;
-	iface->deserialize_property = bayes_storage_memory_deserialize_property;
+  iface->serialize_property = bayes_storage_memory_serialize_property;
+  iface->deserialize_property = bayes_storage_memory_deserialize_property;
+  iface->find_property = bayes_storage_memory_find_property;
 }
