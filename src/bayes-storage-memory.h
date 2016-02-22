@@ -78,6 +78,9 @@ BayesStorageMemory *bayes_storage_memory_new_from_file (const gchar *filename,
  * @filename: name of file to save
  * @error: (allow-none): Return location for an error, or %NULL
  *
+ * Serializes a #BayesStorageMemory instance to a file 
+ * in JSON format.
+ *
  * Returns: %FALSE if @error is set
  */
 gboolean bayes_storage_memory_save_to_file (BayesStorageMemory *self,
