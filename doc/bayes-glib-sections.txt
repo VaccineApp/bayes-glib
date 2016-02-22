@@ -52,6 +52,7 @@ BAYES_TYPE_STORAGE_MEMORY
 BAYES_TYPE_TOKENS
 bayes_storage_memory_new
 bayes_storage_memory_new_from_file
+bayes_storage_memory_new_from_stream
 bayes_storage_memory_save_to_file
 BayesStorageMemory
 BayesTokens

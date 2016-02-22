@@ -224,8 +224,8 @@ bayes_storage_memory_new (void)
 }
 
 BayesStorageMemory *
-bayes_storage_memory_new_from_file (const gchar *filename,
-				    GError **error)
+bayes_storage_memory_new_from_file (const gchar  *filename,
+                                    GError      **error)
 {
 	JsonParser *parser = json_parser_new ();
 	JsonNode *node;
@@ -238,6 +238,24 @@ bayes_storage_memory_new_from_file (const gchar *filename,
 	obj = json_gobject_deserialize (BAYES_TYPE_STORAGE_MEMORY, node);
 
 	return BAYES_STORAGE_MEMORY (obj);
+}
+
+BayesStorageMemory *
+bayes_storage_memory_new_from_stream (GInputStream  *stream,
+                                      GCancellable  *cancellable,
+                                      GError       **error)
+{
+  JsonParser *parser = json_parser_new ();
+  JsonNode *node;
+  GObject *obj;
+
+  if (!json_parser_load_from_stream (parser, stream, NULL, error))
+    return NULL;
+
+  node = json_parser_get_root (parser);
+  obj = json_gobject_deserialize (BAYES_TYPE_STORAGE_MEMORY, node);
+
+  return BAYES_STORAGE_MEMORY (obj);
 }
 
 gboolean

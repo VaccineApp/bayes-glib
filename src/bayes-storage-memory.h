@@ -20,6 +20,7 @@
 #define BAYES_STORAGE_MEMORY_H
 
 #include "bayes-storage.h"
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -70,7 +71,23 @@ BayesStorageMemory *bayes_storage_memory_new (void);
  * if parsing failed or file could not be loaded.
  */
 BayesStorageMemory *bayes_storage_memory_new_from_file (const gchar *filename,
-						        GError **error);
+							  GError **error);
+
+/**
+ * bayes_storage_memory_new_from_stream:
+ * @stream: stream to load from
+ * @cancellable: (allow-none): to cancel loading
+ * @error: (allow-none): Return location for an error, or %NULL
+ *
+ * Creates a new #BayesStorageMemory instance from a stream. The
+ * stream must be a serialized #BayesStorageMemory in JSON format.
+ *
+ * Returns: (transfer full): a new #BayesStorageMemory or %NULL
+ * if parsing failed or stream could not be read from.
+ */
+BayesStorageMemory *bayes_storage_memory_new_from_stream (GInputStream *stream,
+							    GCancellable *cancellable,
+							    GError **error);
 
 /**
  * bayes_storage_memory_save_to_file:
