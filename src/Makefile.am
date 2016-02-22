@@ -47,7 +47,7 @@ Bayes-1.0.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES)
 Bayes_1_0_gir_PACKAGES = gobject-2.0 gio-2.0 glib-2.0 json-glib-1.0
 Bayes_1_0_gir_INCLUDES = GObject-2.0 GLib-2.0 Gio-2.0 Json-1.0
 Bayes_1_0_gir_CFLAGS = -I$(builddir) -I$(srcdir)
-Bayes_1_0_gir_SCANNERFLAGS = --c-include="bayes-glib-1.0/bayes-glib.h"
+Bayes_1_0_gir_SCANNERFLAGS = --c-include="bayes-glib.h"
 Bayes_1_0_gir_LIBS = $(lib_LTLIBRARIES)
 Bayes_1_0_gir_FILES = $(introspection_sources)
 Bayes_1_0_gir_NAMESPACE = Bayes
