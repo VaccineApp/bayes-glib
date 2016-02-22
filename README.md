@@ -5,6 +5,7 @@ Bayesian classifier GObject-based library.
 
 ##Install
 ```
-$ ./autogen.sh --enable-gtk-doc --prefix=/usr --enable-introspection --enable-vala
+$ ./autogen.sh
+$ ./configure --enable-gtk-doc --prefix=/usr --enable-introspection --enable-vala
 $ sudo make install
 ```
