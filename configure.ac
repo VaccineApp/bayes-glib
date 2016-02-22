@@ -47,6 +47,7 @@ dnl ***********************************************************************
 dnl Check for required programs
 dnl ***********************************************************************
 AC_PROG_CC
+AM_PROG_VALAC
 AC_PROG_INSTALL
 AC_PATH_PROG([GLIB_GENMARSHAL],[glib-genmarshal])
 AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
@@ -85,6 +86,7 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/bayes-version.h
 	tests/Makefile
+	tools/Makefile
 ])
 AC_OUTPUT
 
