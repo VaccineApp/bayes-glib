@@ -8,4 +8,4 @@ Description: Bayesian classifier for GLib
 Version: @VERSION@
 Libs: -L${libdir} -lbayes-glib-1.0
 Cflags: -I${includedir}/bayes-glib-1.0
-Requires: gobject-2.0 gio-2.0
+Requires: gobject-2.0 gio-2.0 json-glib-1.0
