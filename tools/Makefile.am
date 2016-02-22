@@ -32,3 +32,5 @@ bayes_trainer_VALAFLAGS = \
 CLEANFILES = *.h *.c *.o *.stamp \
 	bayes-classifier classifier.c \
 	bayes-trainer trainer.c
+
+-include $(top_srcdir)/git.mk
