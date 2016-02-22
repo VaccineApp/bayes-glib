@@ -15,6 +15,7 @@ libbayes_glib_1_0_la_SOURCES = \
 	bayes-classifier.c \
 	bayes-guess.c \
 	bayes-guess-private.h \
+	bayes-storage-memory-private.h \
 	bayes-storage-memory.c \
 	bayes-storage.c \
 	bayes-tokenizer.c
@@ -24,8 +25,9 @@ libbayes_glib_1_0_la_LIBADD = $(BAYES_GLIB_LIBS) -lm
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
-INTROSPECTION_COMPILER_ARGS =
+INTROSPECTION_SCANNER_ARGS = $(INTROSPECTION_FLAGS) --warn-all --warn-error \
+	--add-include-path=$(srcdir) --add-include-path=$(builddir)
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(builddir)
 
 if HAVE_INTROSPECTION
 introspection_sources_0 = \
@@ -38,11 +40,13 @@ introspection_sources_0 = \
 introspection_sources = $(introspecion_sources_0)
 introspection_sources += $(introspection_sources_0:.c=.h)
 introspection_sources += \
-	bayes-guess-private.h
+	bayes-guess-private.h \
+	bayes-storage-memory-private.h
 
 Bayes-1.0.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES)
-Bayes_1_0_gir_INCLUDES = GObject-2.0 GLib-2.0
-Bayes_1_0_gir_CFLAGS = $(AM_CPPFLAGS)
+Bayes_1_0_gir_PACKAGES = gobject-2.0 gio-2.0 glib-2.0 json-glib-1.0
+Bayes_1_0_gir_INCLUDES = GObject-2.0 GLib-2.0 Gio-2.0 Json-1.0
+Bayes_1_0_gir_CFLAGS = -I$(builddir) -I$(srcdir)
 Bayes_1_0_gir_SCANNERFLAGS = --c-include="bayes-glib-1.0/bayes-glib.h"
 Bayes_1_0_gir_LIBS = $(lib_LTLIBRARIES)
 Bayes_1_0_gir_FILES = $(introspection_sources)
@@ -57,6 +61,31 @@ typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = $(gir_DATA) $(typelib_DATA)
+endif
+
+if ENABLE_VAPIGEN
+-include $(VAPIGEN_MAKEFILE)
+
+bayes-glib-1.0.vapi: Bayes-1.0.gir
+
+VAPIGEN_VAPIS = bayes-glib-1.0.vapi
+
+bayes_glib_1_0_vapi_DEPS = \
+	gio-2.0 \
+	json-glib-1.0
+
+bayes_glib_1_0_vapi_METADATADIRS = $(srcdir)
+bayes_glib_1_0_vapi_FILES = Bayes-1.0.gir
+
+bayes-glib-1.0.deps: Makefile
+	$(AM_V_GEN) echo $(bayes_glib_1_0_vapi_DEPS) | tr ' ' '\n' > $@
+
+vapidir = $(datadir)/vapi
+vapi_DATA = $(VAPIGEN_VAPIS) $(VAPIGEN_VAPIS:.vapi=.deps)
+
+EXTRA_DIST = bayes-glib-1.0.deps
+
+DISTCLEANFILES = $(vapi_DATA)
 endif
 
 -include $(top_srcdir)/git.mk

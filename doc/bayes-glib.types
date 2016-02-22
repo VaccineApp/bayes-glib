@@ -2,3 +2,4 @@ bayes_classifier_get_type
 bayes_guess_get_type
 bayes_storage_get_type
 bayes_storage_memory_get_type
+bayes_tokens_get_type

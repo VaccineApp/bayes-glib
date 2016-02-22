@@ -23,9 +23,31 @@
 
 G_BEGIN_DECLS
 
+#define BAYES_TYPE_TOKENS (bayes_tokens_get_type ())
+
+typedef struct _BayesTokens BayesTokens;
+
 #define BAYES_TYPE_STORAGE_MEMORY (bayes_storage_memory_get_type())
 
 G_DECLARE_FINAL_TYPE (BayesStorageMemory, bayes_storage_memory, BAYES, STORAGE_MEMORY, GObject)
+
+struct _BayesStorageMemory
+{
+  GObject     parent_instance;
+
+  /*< private >*/
+
+  /* somehow this is needed to get proper GI types for properties */
+  /**
+   * BayesStorageMemory:names: (type GLib.HashTable(utf8,Bayes.Tokens))
+   */
+  GHashTable  *names;
+
+  /**
+   * BayesStorageMemory:corpus: (type Bayes.Tokens)
+   */
+  BayesTokens *corpus;
+};
 
 /**
  * bayes_storage_memory_new:
@@ -35,6 +57,32 @@ G_DECLARE_FINAL_TYPE (BayesStorageMemory, bayes_storage_memory, BAYES, STORAGE_M
  * Returns: (transfer full): A new #BayesStorageMemory
  */
 BayesStorageMemory *bayes_storage_memory_new (void);
+
+/**
+ * bayes_storage_memory_new_from_file:
+ * @filename: Name of filename to load
+ * @error: (allow-none): Return location for an error, or %NULL
+ *
+ * Creates a new #BayesStorageMemory instance from a file. The
+ * file must be a serialized #BayesStorageMemory in JSON format.
+ *
+ * Returns: (transfer full): a new BayesStorageMemory or %NULL
+ * if parsing failed or file could not be loaded.
+ */
+BayesStorageMemory *bayes_storage_memory_new_from_file (const gchar *filename,
+						        GError **error);
+
+/**
+ * bayes_storage_memory_save_to_file:
+ * @self: a #BayesStorageMemory
+ * @filename: name of file to save
+ * @error: (allow-none): Return location for an error, or %NULL
+ *
+ * Returns: %FALSE if @error is set
+ */
+gboolean bayes_storage_memory_save_to_file (BayesStorageMemory *self,
+					    const gchar *filename,
+					    GError **error);
 
 G_END_DECLS
 

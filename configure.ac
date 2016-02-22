@@ -54,13 +54,15 @@ AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources])
 PKG_PROG_PKG_CONFIG([0.22])
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([1.42.0])
+VAPIGEN_CHECK
 GTK_DOC_CHECK
 
 
 dnl ***********************************************************************
 dnl Check for required packages
 dnl ***********************************************************************
-PKG_CHECK_MODULES(BAYES_GLIB, [gio-2.0 >= 2.46.0])
+PKG_CHECK_MODULES(BAYES_GLIB, [gio-2.0 >= 2.46.0
+			       json-glib-1.0])
 
 
 dnl ***********************************************************************
