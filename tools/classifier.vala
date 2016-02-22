@@ -26,6 +26,7 @@ public class SourceCodeClassifier {
     [CCode (array_length = false, array_null_terminated = true)]
     private static string[]? files = null;
     private static string? serialize_file = null;
+    private static string? tokenizer = "word";
 
     private const OptionEntry[] options = {
 	    // --training-file
@@ -34,6 +35,8 @@ public class SourceCodeClassifier {
 	    { "files", 'i', 0, OptionArg.FILENAME_ARRAY, ref files, "Files to classify", "FILE..." },
 	    // --reserialize
 	    { "reserialize", 'o', 0, OptionArg.FILENAME, ref serialize_file, "File to re-serialize training data to", "FILE"},
+	    // --tokenizer
+	    { "tokenizer", 0, 0, OptionArg.STRING, ref tokenizer, "Tokenizer function", "'word' | 'code_tokens'"},
 	    { null }
     };
 
@@ -50,6 +53,16 @@ public class SourceCodeClassifier {
 		return 0;
 	}
 	classifier = new Bayes.Classifier ();
+
+    // FIXME: bindings
+	if (tokenizer == "word")
+	    classifier.set_tokenizer (text => {
+	        return Bayes.tokenizer_word (text, null);
+	    });
+	else if (tokenizer == "code_tokens")
+	    classifier.set_tokenizer (text => {
+	        return Bayes.tokenizer_code_tokens (text, null);
+	    });
 
 	// deserializing
 	try {

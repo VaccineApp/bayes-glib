@@ -72,3 +72,81 @@ bayes_tokenizer_word (const gchar *text,
 
   return (gchar **)g_ptr_array_free (ret, FALSE);
 }
+
+gchar **
+bayes_tokenizer_code_tokens (const gchar *text,
+                             gpointer     user_data)
+{
+  struct Expr {
+    const gchar *expr;
+    gsize initialized;
+    GRegex *regex;
+  };
+  static struct Expr expressions[] = {
+      { "(?<![\\<\"\\w\\$])\\w+(?![\\>\"])", FALSE, NULL },                        // symbols
+      { "\\*+(?=[\\w\\[])", FALSE, NULL },             // pointers
+      { "\\<\\w+\\>", FALSE, NULL },                  // type params
+      { "(?<!:):(?!:)", FALSE, NULL },
+      { "(?<=\\w)::(?=\\w)", FALSE, NULL },
+      { " ::: ", FALSE, NULL },
+      { " :: ", FALSE, NULL },
+      { "(?<=[\\w\\)])\\.(?=\\w)", FALSE, NULL },
+      { "(?<=[\\w\\)])\\.$", FALSE, NULL },
+      { "[-=]>", FALSE, NULL },
+      { "=(?!>)", FALSE, NULL },
+      { "\\$[\\(<\\^]", FALSE, NULL },
+      { "\\|", FALSE, NULL },
+      { "\\[\\]", FALSE, NULL },
+      { "\\?", FALSE, NULL },
+      { "\"\\w+\"", FALSE, NULL },
+      { "\\$\\w+", FALSE, NULL },
+      { "[{}]", FALSE, NULL },
+      { 0, 0 }
+  };
+  GMatchInfo *match_info;
+  GPtrArray *ret;
+  gchar **strv;
+  guint i;
+
+  struct Expr *expr;
+
+  ret = g_ptr_array_new ();
+
+  for (expr = &expressions[0]; expr->expr; ++expr)
+    {
+      if (g_once_init_enter (&expr->initialized))
+        {
+          GError *error = NULL;
+          expr->regex = g_regex_new (expr->expr, G_REGEX_OPTIMIZE, 0, &error);
+          if (!expr->regex)
+            {
+              g_printerr ("failed to compile %s: %s", expr->expr, error->message);
+              g_assert_not_reached ();
+            }
+          g_once_init_leave (&expr->initialized, TRUE);
+        }
+
+      if (g_regex_match (expr->regex, text, 0, &match_info))
+        {
+          while (g_match_info_matches (match_info))
+            {
+              strv = g_match_info_fetch_all (match_info);
+
+              for (i = 0; strv[i]; i++)
+                {
+                  g_ptr_array_add (ret, strv[i]);
+                  strv[i] = NULL;
+                }
+
+              g_free (strv);
+              g_match_info_next (match_info, NULL);
+            }
+        }
+
+      g_match_info_free (match_info);
+    }
+
+  g_ptr_array_add (ret, NULL);
+
+  return (gchar **)g_ptr_array_free (ret, FALSE);
+}

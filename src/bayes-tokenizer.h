@@ -45,7 +45,7 @@ typedef gchar **(*BayesTokenizer) (const gchar *text,
 /**
  * bayes_tokenizer_word:
  * @text: (in): A string of text to tokenize.
- * @user_data: (in): Unused.
+ * @user_data: (skip): Unused.
  *
  * Standard tokenizer for input text that tries to split the text
  * based on whitespace. This uses a simple regex "\w+".
@@ -56,6 +56,19 @@ typedef gchar **(*BayesTokenizer) (const gchar *text,
 gchar **bayes_tokenizer_word (const gchar *text,
                               gpointer     user_data);
 
+/**
+ * bayes_tokenizer_code_tokens:
+ * @text: (in): A string of text to tokenize.
+ * @user_data: (skip): Unused.
+ *
+ * Tokenizer for source code input that analyzes words
+ * and operators.
+ *
+ * Returns: (array zero-terminated=1) (transfer full):
+ * 	A newly allocated, null-terminated array of strings.
+ */
+gchar **bayes_tokenizer_code_tokens (const gchar *text,
+                                     gpointer     user_data);
 
 G_END_DECLS
 

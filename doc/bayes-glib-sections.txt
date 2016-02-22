@@ -62,6 +62,7 @@ BayesTokens
 <FILE>bayes-tokenizer</FILE>
 BayesTokenizer
 bayes_tokenizer_word
+bayes_tokenizer_code_tokens
 </SECTION>
 
 <SECTION>
