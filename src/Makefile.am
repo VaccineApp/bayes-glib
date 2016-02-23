@@ -23,13 +23,12 @@ libbayes_glib_1_0_la_SOURCES = \
 libbayes_glib_1_0_la_CFLAGS = $(BAYES_GLIB_CFLAGS)
 libbayes_glib_1_0_la_LIBADD = $(BAYES_GLIB_LIBS) -lm
 
+if HAVE_INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = $(INTROSPECTION_FLAGS) --warn-all --warn-error \
-	--add-include-path=$(srcdir) --add-include-path=$(builddir)
-INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(builddir)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
-if HAVE_INTROSPECTION
 introspection_sources_0 = \
 	bayes-classifier.c \
 	bayes-guess.c \

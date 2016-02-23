@@ -13,7 +13,7 @@ bayes_classifier_LDADD = \
 	-lm
 
 bayes_classifier_VALAFLAGS = \
-	--vapidir $(top_srcdir)/src \
+	--vapidir $(top_builddir)/src \
 	--pkg bayes-glib-1.0 \
 	--pkg json-glib-1.0
 
@@ -25,13 +25,13 @@ bayes_trainer_CFLAGS = \
 	$(BAYES_GLIB_CFLAGS) \
 	-I$(top_srcdir)/src
 
-bayes_trainer_LDFLAGS = \
+bayes_trainer_LDADD = \
 	$(BAYES_GLIB_LIBS) \
 	$(top_builddir)/src/libbayes-glib-1.0.la
 	-lm
 
 bayes_trainer_VALAFLAGS = \
-	--vapidir $(top_srcdir)/src \
+	--vapidir $(top_builddir)/src \
 	--pkg bayes-glib-1.0 \
 	--pkg json-glib-1.0
 
