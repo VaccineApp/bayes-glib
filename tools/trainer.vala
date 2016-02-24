@@ -25,15 +25,17 @@ public class SourceCodeTrainer {
     
     static void train_test (string lang_dir, string language) {
         File samples = File.new_for_path (@"$samples_dir/$lang_dir");
-        FileEnumerator enumerator = samples.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+        if (FileUtils.test (samples.get_path (), FileTest.EXISTS) && FileUtils.test (samples.get_path (), FileTest.IS_DIR)) {
+            FileEnumerator enumerator = samples.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
 
-        FileInfo info = null;
-        while ((info = enumerator.next_file ()) != null) {
-            if (info.get_file_type () == FileType.DIRECTORY)
-                continue;
-            Test.message ("training with %s...", info.get_name ());
-            if (!train_file (language, @"$samples_dir/$lang_dir/%s".printf(info.get_name ())))
-		        Test.fail ();
+            FileInfo info = null;
+            while ((info = enumerator.next_file ()) != null) {
+                if (info.get_file_type () == FileType.DIRECTORY)
+                    continue;
+                Test.message ("training with %s...", info.get_name ());
+                if (!train_file (language, @"$samples_dir/$lang_dir/%s".printf(info.get_name ())))
+                            Test.fail ();
+            }
         }
     }
 
