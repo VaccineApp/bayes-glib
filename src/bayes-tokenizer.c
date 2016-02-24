@@ -83,17 +83,19 @@ bayes_tokenizer_code_tokens (const gchar *text,
     GRegex *regex;
   };
   static struct Expr expressions[] = {
-      { "(?<![\\<\"\\w\\$])\\w+(?![\\>\"])", FALSE, NULL },                        // symbols
+      { "(?<![\\(\\<\"\\w\\$\\#\\%\\@])[A-Za-z_]\\w*(?![\\w\\>\"\\)])", FALSE, NULL },                        // symbols
       { "\\*+(?=[\\w\\[])", FALSE, NULL },             // pointers
       { "\\<\\w+\\>", FALSE, NULL },                  // type params
       { "(?<!:):(?!:)", FALSE, NULL },
-      { "(?<=\\w)::(?=\\w)", FALSE, NULL },
+      { "(?<=[\\w\\>])::(?=\\w)", FALSE, NULL },
       { " ::: ", FALSE, NULL },
       { " :: ", FALSE, NULL },
       { "(?<=[\\w\\)])\\.(?=\\w)", FALSE, NULL },
       { "(?<=[\\w\\)])\\.$", FALSE, NULL },
-      { "[-=]>", FALSE, NULL },
-      { "=(?!>)", FALSE, NULL },
+      { "(?<![:<>=])=(?![>=])", FALSE, NULL },
+      { "[-=]{1,3}>", FALSE, NULL },
+      { "(?<!<)={3,}(?!>)", FALSE, NULL },
+      { ":=+(?![>=])", FALSE, NULL },
       { "\\$[\\(<\\^]", FALSE, NULL },
       { "\\|", FALSE, NULL },
       { "\\[\\]", FALSE, NULL },
@@ -101,6 +103,17 @@ bayes_tokenizer_code_tokens (const gchar *text,
       { "\"\\w+\"", FALSE, NULL },
       { "\\$\\w+", FALSE, NULL },
       { "[{}]", FALSE, NULL },
+      { "#\\w+(?![\\>\"])", FALSE, NULL },
+      { "\\(\\w+\\)", FALSE, NULL },
+      { "@\\w+", FALSE, NULL },
+      { "%\\w+", FALSE, NULL },
+      { "<\\w+\\.[a-z]+>", FALSE, NULL },
+      { ";", FALSE, NULL },
+      { "(?!</)//(?!/)", FALSE, NULL },
+      { "///", FALSE, NULL },
+      { "/\\*+", FALSE, NULL },
+      { "\\*/(?!/)", FALSE, NULL },
+      { "</\\w+>", FALSE, NULL },
       { 0, 0 }
   };
   GMatchInfo *match_info;
