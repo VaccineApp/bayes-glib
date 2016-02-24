@@ -83,7 +83,7 @@ bayes_tokenizer_code_tokens (const gchar *text,
     GRegex *regex;
   };
   static struct Expr expressions[] = {
-      { "(?<![\\(\\<\"\\w\\$\\#\\%\\@])[A-Za-z_]\\w*(?![\\w\\>\"\\)])", FALSE, NULL },                        // symbols
+      { "(?<![\\(\\<\"\\w\\$\\#\\%\\@])[A-Za-z_]\\w+(?![\\w\\>\"\\)])", FALSE, NULL },                        // symbols
       { "\\*+(?=[\\w\\[])", FALSE, NULL },             // pointers
       { "\\<\\w+\\>", FALSE, NULL },                  // type params
       { "(?<!:):(?!:)", FALSE, NULL },
