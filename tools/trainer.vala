@@ -93,6 +93,7 @@ public class SourceCodeTrainer {
 	Test.add_func ("/Train/Makefile", () => train_test ("Makefile", "makefile"));
 	Test.add_func ("/Train/PHP", () => train_test ("PHP", "php"));
 	Test.add_func ("/Train/Python", () => train_test ("Python", "python"));
+	Test.add_func ("/Train/Ruby", () => train_test ("Ruby", "ruby"));
 	Test.add_func ("/Train/Scala", () => train_test ("Scala", "scala"));
 	Test.add_func ("/Train/Shell", () => train_test ("Shell", "sh"));
 	Test.add_func ("/Train/SQL", () => train_test ("SQL", "sql"));
