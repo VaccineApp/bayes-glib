@@ -1,4 +1,5 @@
 lib_LTLIBRARIES = libbayes-glib-1.0.la
+noinst_LIBRARIES = libbayes-glib-1.0.a
 
 pkgincludedir = $(includedir)/bayes-glib-1.0
 pkginclude_HEADERS = \
@@ -22,6 +23,10 @@ libbayes_glib_1_0_la_SOURCES = \
 
 libbayes_glib_1_0_la_CFLAGS = $(BAYES_GLIB_CFLAGS)
 libbayes_glib_1_0_la_LIBADD = $(BAYES_GLIB_LIBS) -lm
+
+libbayes_glib_1_0_a_SOURCES = $(libbayes_glib_1_0_la_SOURCES)
+libbayes_glib_1_0_a_CFLAGS = $(libbayes_glib_1_0_la_CFLAGS)
+libbayes_glib_1_0_a_LDFLAGS = $(libbayes_glib_1_0_la_LIBADD)
 
 if HAVE_INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
