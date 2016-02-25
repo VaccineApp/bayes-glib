@@ -81,10 +81,14 @@ public class SourceCodeTrainer {
 	Test.add_func ("/Train/C", () => train_test ("C", "c"));
 	Test.add_func ("/Train/C#", () => train_test ("C#", "c-sharp"));
 	Test.add_func ("/Train/C++", () => train_test ("C++", "cpp"));
+	Test.add_func ("/Train/CMake", () => train_test ("CMake", "cmake"));
+	Test.add_func ("/Train/CSS", () => train_test ("CSS", "css"));
+	Test.add_func ("/Train/F#", () => train_test ("F#", "fsharp"));
+	Test.add_func ("/Train/GLSL", () => train_test ("GLSL", "glsl"));
 	Test.add_func ("/Train/Java", () => train_test ("Java", "java"));
 	Test.add_func ("/Train/JavaScript", () => train_test ("JavaScript", "js"));
 	Test.add_func ("/Train/JSON", () => train_test ("JSON", "json"));
-	Test.add_func ("/Train/Haskell", () => train_test ("Haskell", "haskell-literate"));
+	Test.add_func ("/Train/Haskell", () => train_test ("Haskell", "haskell"));
 	Test.add_func ("/Train/HTML", () => train_test ("HTML", "html"));
 	Test.add_func ("/Train/Makefile", () => train_test ("Makefile", "makefile"));
 	Test.add_func ("/Train/PHP", () => train_test ("PHP", "php"));
@@ -92,6 +96,7 @@ public class SourceCodeTrainer {
 	Test.add_func ("/Train/Scala", () => train_test ("Scala", "scala"));
 	Test.add_func ("/Train/Shell", () => train_test ("Shell", "sh"));
 	Test.add_func ("/Train/SQL", () => train_test ("SQL", "sql"));
+	Test.add_func ("/Train/TeX", () => train_test ("LaTeX", "latex"));
 
 	// serializing
 	Test.add_func ("/Serialize/Training Data", () => {

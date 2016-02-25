@@ -73,6 +73,8 @@ bayes_tokenizer_word (const gchar *text,
   return (gchar **)g_ptr_array_free (ret, FALSE);
 }
 
+#define _EXPR(expr, replace) { expr, FALSE, NULL, replace }
+
 gchar **
 bayes_tokenizer_code_tokens (const gchar *text,
                              gpointer     user_data)
@@ -81,44 +83,52 @@ bayes_tokenizer_code_tokens (const gchar *text,
     const gchar *expr;
     gsize initialized;
     GRegex *regex;
+    const gchar *replace;
   };
   static struct Expr expressions[] = {
-      { "(?<![\\(\\<\"\\w\\$\\#\\%\\@])[A-Za-z_]\\w+(?![\\w\\>\"\\)])", FALSE, NULL },                        // symbols
-      { "\\*+(?=[\\w\\[])", FALSE, NULL },             // pointers
-      { "\\<\\w+\\>", FALSE, NULL },                  // type params
-      { "(?<!:):(?!:)", FALSE, NULL },
-      { "(?<=[\\w\\>])::(?=\\w)", FALSE, NULL },
-      { " ::: ", FALSE, NULL },
-      { " :: ", FALSE, NULL },
-      { "(?<=[\\w\\)])\\.(?=\\w)", FALSE, NULL },
-      { "(?<=[\\w\\)])\\.$", FALSE, NULL },
-      { "(?<![:<>=])=(?![>=])", FALSE, NULL },
-      { "[-=]{1,3}>", FALSE, NULL },
-      { "(?<!<)={3,}(?!>)", FALSE, NULL },
-      { ":=+(?![>=])", FALSE, NULL },
-      { "\\$[\\(<\\^]", FALSE, NULL },
-      { "\\|", FALSE, NULL },
-      { "\\[\\]", FALSE, NULL },
-      { "\\?", FALSE, NULL },
-      { "\"\\w+\"", FALSE, NULL },
-      { "\\$\\w+", FALSE, NULL },
-      { "[{}]", FALSE, NULL },
-      { "#\\w+(?![\\>\"])", FALSE, NULL },
-      { "\\(\\w+\\)", FALSE, NULL },
-      { "@\\w+", FALSE, NULL },
-      { "%\\w+", FALSE, NULL },
-      { "<\\w+\\.[a-z]+>", FALSE, NULL },
-      { ";", FALSE, NULL },
-      { "(?!</)//(?!/)", FALSE, NULL },
-      { "///", FALSE, NULL },
-      { "/\\*+", FALSE, NULL },
-      { "\\*/(?!/)", FALSE, NULL },
-      { "</\\w+>", FALSE, NULL },
+      _EXPR ("(?<![\\(\\<\"\\w\\$\\#\\%\\@])[A-Za-z_]\\w+(?![\\w\\>\"\\)])", ":word:\\0"),
+      _EXPR ("\\*+(?=[\\w\\[])", "\\0"),
+      _EXPR ("\\<\\w+\\>", ":angle1:"),
+      _EXPR ("(?<!:):(?![:\\n])", "\\0"),
+      _EXPR ("(?<!:):\\n", ":colon_newline:"),
+      _EXPR ("(?<=[\\w\\>])::(?=\\w)", "\\0"),
+      _EXPR (" ::: ", "\\0"),
+      _EXPR (" :: ", "\\0"),
+      _EXPR ("(?<=[\\w\\)])\\.(?=\\w)", "\\0"),
+      _EXPR("(?<=[\\w\\)])\\.$", "\\0"),
+      _EXPR("(?<![:<>=])=(?![>=])", "\\0"),
+      _EXPR("[-=]{1,3}>", "\\0"),
+      _EXPR("(?<!<)={3,}(?!>)", ":3+=:"),
+      _EXPR(":=+(?![>=])", "::=:"),
+      _EXPR("\\$[\\(<\\^]", "\\0"),
+      _EXPR("\\|", "\\0"),
+      _EXPR("\\[\\]", "\\0"),
+      _EXPR("\\?", "\\0"),
+      _EXPR("\"\\w+\"(?=:)", ":property:"),
+      _EXPR("\\$\\w+", ":$word:"),
+      _EXPR("{.*}", ":bracketed:"),
+      _EXPR("#\\w+(?![\\>\"])", "\\0"),
+      _EXPR("\\((\\w+)\\)\\s*(?=\\w)", ":cast:\\1"),
+      _EXPR("\\((\\w+) ?\\*+\\)", ":castptr:\\1"),
+      _EXPR("@\\w+", "\\0"),
+      _EXPR("%\\w+", "\\0"),
+      _EXPR("&\\w+", ":ref:"),
+      _EXPR("<[\\w/]+\\.[a-z]+>", ":angle2:"),
+      _EXPR(";\\n", ":end;:"),
+      _EXPR(";(?!\\n)", ";"),
+      _EXPR("(?!</)//(?!/)", "\\0"),
+      _EXPR("///", "\\0"),
+      _EXPR("/\\*", "\\0"),
+      _EXPR("\\*/(?!/)", "\\0"),
+      _EXPR("</\\w+>", ":end_tag:"),
+      _EXPR("\\w+\\.\\w+\\(", ":object_call:"),
+      _EXPR("\\w+->\\w+\\(", ":object_call_deref:"),
       { 0, 0 }
   };
   GMatchInfo *match_info;
   GPtrArray *ret;
   gchar **strv;
+  gchar *strr;
   guint i;
 
   struct Expr *expr;
@@ -147,7 +157,10 @@ bayes_tokenizer_code_tokens (const gchar *text,
 
               for (i = 0; strv[i]; i++)
                 {
-                  g_ptr_array_add (ret, strv[i]);
+                  strr = g_regex_replace (expr->regex, strv[i], -1, 0,
+                                          expr->replace, 0, NULL);
+                  g_ptr_array_add (ret, strr);
+                  g_free (strv[i]);
                   strv[i] = NULL;
                 }
 
