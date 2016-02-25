@@ -6,7 +6,7 @@ dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([major_version],[0])
 m4_define([minor_version],[2])
-m4_define([micro_version],[1])
+m4_define([micro_version],[2])
 m4_define([package_version],[major_version.minor_version.micro_version])
 m4_define([bug_report_url],[https://github.com/chergert/bayes-glib/issues])
 m4_define([interface_age],[0])
