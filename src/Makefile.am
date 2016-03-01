@@ -41,7 +41,7 @@ introspection_sources_0 = \
 	bayes-storage.c \
 	bayes-tokenizer.c
 
-introspection_sources = $(introspecion_sources_0)
+introspection_sources = $(introspection_sources_0)
 introspection_sources += $(introspection_sources_0:.c=.h)
 introspection_sources += \
 	bayes-guess-private.h \
